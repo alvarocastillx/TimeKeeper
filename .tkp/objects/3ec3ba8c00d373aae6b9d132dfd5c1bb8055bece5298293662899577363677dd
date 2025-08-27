@@ -165,11 +165,8 @@ def add_all():
     staging_indexer()
     
 def commit():
-    #creates snapshot of project
-    console.print("Comitting...", style="bold blue")
-    console.print("Commit succesfully created...", style="bold green")
-
-    
+    #creates snapshot of project and author
+    pass
     
 
 def help():
