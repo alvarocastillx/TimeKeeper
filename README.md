@@ -1,13 +1,6 @@
 # ⏳ Timekeeper
 
-          
-          
-
-          
-          
-
-A **lightweight version control system** designed to help you track your project files.  
-Think of it as a mini-Git: simple, visual, and educational — perfect for understanding the core of version control.
+A **lightweight version control system**  that tracks your project through stages and commits. Designed to provide clear checkpoints during development and snapshots of stable versions, making it easy to manage and revert your work.
 
 ---
 
@@ -18,7 +11,8 @@ Think of it as a mini-Git: simple, visual, and educational — perfect for under
 - ✅ Interactive CLI with colors and ASCII banners  
 - ✅ Handles **Unicode files** flawlessly  
 - ✅ Lightweight, simple, and fully understandable  
-- ⚡ **Future:** commit history, revert, checkout  
+- ⚡ **Future features:** commit history, revert selected stage or commit...
+- 🆘 Feedback is the most important thing! Feel free to help make TimeKeeper something useful!
 
 ---
 
@@ -39,17 +33,21 @@ setx PATH "$env:PATH;C:\path\to\timekeeper"
 ## 🔧 How it works
 | Component  | Purpose |
 |------------|---------|
-| **Staging** | `add_all` indexes your files and creates **hashed blobs** in `.tkp/objects/`. |
-| **Objects** | Stores the **content of each file** exactly once, identified by SHA-256 hash. |
+| **Staging** | Indexes your files and stores them as hashed blobs in `.tkp/objects/`. Stages act as checkpoints during build stabilization, allowing you to revert your project to the last stage at any time. |
+| **Objects** | Stores the **content of each file**, identified by SHA-256 hash. |
 | **Index** | Maps file paths to object hashes for reconstruction. |
-| **Commit** | Records a snapshot of the project, referencing the staged objects (future feature). |
+| **Commit** | Commit finalized stage — removes all stages and creates a clean project snapshot.  |
+| **Reverts** | TimeKeeper lets you revert your project to last stage  (checkpoint) or commit whenever you want! PD: In the future it will let you decide a specific stage or commit 👁|
+
 
 ## 💡 Usage
-| Command  | Function |
+| Command  | Purpose |
 |------------|---------|
 | **timekeeper init** | Initialize timekeeper repository |
 | **timekeeper add_all** | Stage all changes |
 | **timekeeper commit** | Commit last uncomitted stage |
 | **timekeeper help** | Displays help menu |
-| **(Developing...) timekeeper revert** | Revert files to last commit |
+| **🔧 timekeeper revert_stage** | Revert project to last stage |
+| **🔧 timekeeper revert_commit** | Revert project to last commit |
+
 
