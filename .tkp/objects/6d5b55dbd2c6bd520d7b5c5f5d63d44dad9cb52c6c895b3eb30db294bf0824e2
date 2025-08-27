@@ -183,10 +183,10 @@ def commit():
         else:
             #read content of last_stage #TODO: select stage to commit
             with open(stage_files[-1], "r", encoding="utf-8") as f:
-                last_stage_hash = get_sha256_file(stage_files[-1])
+                last_stage_hash = get_sha256_file(f)
                 last_stage_content = f.read()
 
-            commit_id = f"{str(last_stage_hash)}_{str(datetime.datetime.timestamp(datetime.datetime.now()))}"
+            commit_id = last_stage_hash+datetime.datetime.timestamp()
             
             # write content of last stage into last_commit.tkp
             with open(os.path.join(tkp_path, commit_id), "w", encoding="utf-8") as f:
@@ -202,10 +202,7 @@ def commit():
         console.print("Commit canceled by user", style="bold red")
         pass
 
-def revert_stage():
-    pass
-def revert_commit():
-    pass
+    
     
 
 def help():
@@ -220,12 +217,10 @@ def help():
             timekeeper <command> [options]
 
         Available commands:
-            init          Initialize a new repository
-            add_all       Add all files to staging
-            commit        Commit changes
-            revert_stage  Revert code to last stage 
-            revert_commit Revert project to last commit
-            help          Show this help message
+            init        Initialize a new repository
+            add_all     Add all files to staging
+            commit      Commit changes
+            help        Show this help message
 
         Examples:
             timekeeper init
@@ -235,14 +230,14 @@ def help():
         
         
 if __name__ == "__main__":
-    possible_commands = {"init":init,"add_all":add_all,"help":help,"commit":commit,"revert_stage":revert_stage,"revert_commit":revert_commit,"exit":exit}
+    possible_commands = {"init":init,"add_all":add_all,"help":help,"commit":commit,"exit":exit}
     if len(sys.argv) >= 2 and sys.argv[1] in possible_commands:
         cmd = sys.argv[1]
         possible_commands[cmd]()
     else:
         choice = select(
             "Timekeeper - choose an action:",
-            choices=["init", "add_all", "commit","revert_stage","revert_commit","help", "exit"],
+            choices=["init", "add_all", "commit", "help", "exit"],
             style=custom_style
         ).ask()
 

@@ -5,8 +5,7 @@ import json
 import hashlib
 from questionary import Style, select
 from rich.console import Console
-import shutil                   
-import datetime                                        
+import shutil                                                           
 
 ############
 ####aux#####
@@ -170,42 +169,17 @@ def add_all():
 def commit():
     #creates snapshot of project
     choice = select(
-            "Are you sure you want to commit last stage? Doing so will delete all stages and restart checkpoint. Check help for more information - choose an action:",
+            "Are you sure you want to commit last stage? - choose an action:",
             choices=["Y", "N"],
             style=custom_style
         ).ask()
-    if (choice=="Y"):
-        src = os.getcwd()
-        tkp_path = os.path.join(src,".tkp")
-        stage_files = [os.path.join(tkp_path,f) for f in os.listdir(tkp_path) if f.__contains__("stage")]
-        if len(stage_files) == 0:
-            console.print("ERROR - There is nothing to commit", style="bold red")
-        else:
-            #read content of last_stage #TODO: select stage to commit
-            with open(stage_files[-1], "r", encoding="utf-8") as f:
-                last_stage_hash = get_sha256_file(stage_files[-1])
-                last_stage_content = f.read()
-
-            commit_id = f"{str(last_stage_hash)}_{str(datetime.datetime.timestamp(datetime.datetime.now()))}"
-            
-            # write content of last stage into last_commit.tkp
-            with open(os.path.join(tkp_path, commit_id), "w", encoding="utf-8") as f:
-                f.write(last_stage_content)
-                
-            #remove all stage files 
-            for stage_file in stage_files:
-                os.remove(stage_file)
-                
-            console.print("Comitting...", style="bold blue")
-            console.print("Stage succesfully commited...", style="bold green")
+    if (choice=="Y"):   
+        console.print("Comitting...", style="bold blue")
+        console.print("Stage succesfully commited...", style="bold green")
     else:
-        console.print("Commit canceled by user", style="bold red")
         pass
 
-def revert_stage():
-    pass
-def revert_commit():
-    pass
+    
     
 
 def help():
@@ -220,12 +194,10 @@ def help():
             timekeeper <command> [options]
 
         Available commands:
-            init          Initialize a new repository
-            add_all       Add all files to staging
-            commit        Commit changes
-            revert_stage  Revert code to last stage 
-            revert_commit Revert project to last commit
-            help          Show this help message
+            init        Initialize a new repository
+            add_all     Add all files to staging
+            commit      Commit changes
+            help        Show this help message
 
         Examples:
             timekeeper init
@@ -235,14 +207,14 @@ def help():
         
         
 if __name__ == "__main__":
-    possible_commands = {"init":init,"add_all":add_all,"help":help,"commit":commit,"revert_stage":revert_stage,"revert_commit":revert_commit,"exit":exit}
+    possible_commands = {"init":init,"add_all":add_all,"help":help,"commit":commit,"exit":exit}
     if len(sys.argv) >= 2 and sys.argv[1] in possible_commands:
         cmd = sys.argv[1]
         possible_commands[cmd]()
     else:
         choice = select(
             "Timekeeper - choose an action:",
-            choices=["init", "add_all", "commit","revert_stage","revert_commit","help", "exit"],
+            choices=["init", "add_all", "commit", "help", "exit"],
             style=custom_style
         ).ask()
 
