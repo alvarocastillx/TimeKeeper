@@ -28,7 +28,7 @@ Think of it as a mini-Git: simple, visual, and educational — perfect for under
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/timekeeper.gitc
+git clone https://github.com/alvarocastillx/timekeeper.git
 cd timekeeper
 
 # (Optional) Add to PATH for CLI usage
