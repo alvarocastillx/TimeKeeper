@@ -1,11 +1,9 @@
 import os
 import sys
-import difflib
 import json
 import hashlib
 from questionary import Style, select
 from rich.console import Console
-import shutil                   
 import datetime                                        
 
 ############
@@ -159,6 +157,7 @@ def init():
     else:
         os.makedirs(".tkp")
         os.makedirs(".tkp/objects")
+        os.makedirs(".tkp/commits")
         # open(".tkp/stage-0.tkp", "x")
         console.print("Repository has been created succesfully", style="bold green")
 
@@ -175,35 +174,48 @@ def commit():
             style=custom_style
         ).ask()
     if (choice=="Y"):
+        console.print("Comitting...", style="bold blue")
         src = os.getcwd()
         tkp_path = os.path.join(src,".tkp")
         stage_files = [os.path.join(tkp_path,f) for f in os.listdir(tkp_path) if f.__contains__("stage")]
-        if len(stage_files) == 0:
-            console.print("ERROR - There is nothing to commit", style="bold red")
-        else:
-            #read content of last_stage #TODO: select stage to commit
-            with open(stage_files[-1], "r", encoding="utf-8") as f:
-                last_stage_hash = get_sha256_file(stage_files[-1])
-                last_stage_content = f.read()
+        try:
+            if len(stage_files) == 0:
+                console.print("ERROR - There is nothing to commit", style="bold red")
+            else:
+                #read content of last_stage #TODO: select stage to commit
+                with open(stage_files[-1], "r", encoding="utf-8") as f:
+                    last_stage_hash = get_sha256_file(stage_files[-1])
+                    last_stage_content = f.read()
 
-            commit_id = f"{str(last_stage_hash)}_{str(datetime.datetime.timestamp(datetime.datetime.now()))}"
-            
-            # write content of last stage into last_commit.tkp
-            with open(os.path.join(tkp_path, commit_id), "w", encoding="utf-8") as f:
-                f.write(last_stage_content)
+                commit_id = f"{str(last_stage_hash)}_{str(datetime.datetime.timestamp(datetime.datetime.now()))}.tkp"
                 
-            #remove all stage files 
-            for stage_file in stage_files:
-                os.remove(stage_file)
-                
-            console.print("Comitting...", style="bold blue")
-            console.print("Stage succesfully commited...", style="bold green")
+                # write content of last stage into commits.tkp
+                with open(os.path.join(tkp_path,"commits",commit_id), "w", encoding="utf-8") as f:
+                    f.write(last_stage_content)
+                    
+                #remove all stage files 
+                for stage_file in stage_files:
+                    os.remove(stage_file)
+                    
+                console.print("Stage succesfully commited...", style="bold green")
+        except Exception as e:
+            console.print(f"An error ocurred during commit process. Err: {e}", style="bold red")
     else:
         console.print("Commit canceled by user", style="bold red")
-        pass
 
+#revert last stage
 def revert_stage():
-    pass
+    choice = select(
+            "Are you sure you want to revert project to last stage? - choose an action:",
+            choices=["Y", "N"],
+            style=custom_style
+        ).ask()
+    if choice == "Y":
+        pass
+    else:
+        console.print("revert_stage canceled by user", style="bold red")
+        pass
+    
 def revert_commit():
     pass
     
