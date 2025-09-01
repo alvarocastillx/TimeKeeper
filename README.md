@@ -17,8 +17,8 @@ A **lightweight version control system**  that tracks your project through stage
 - 🆘 Feedback is the most important thing! Feel free to help make TimeKeeper something useful!
 
 ---
+<img width="1920" height="1440" alt="843shots_so" src="https://github.com/user-attachments/assets/2cf81f77-5d33-4a17-bbed-6ba96b34436f" />
 
----
 
 ## 🚀 Installation
 
@@ -52,6 +52,8 @@ setx PATH "$env:PATH;C:\path\to\timekeeper"
 | **timekeeper revert_stage** | Revert project to last stage |
 | **timekeeper revert_commit** | Revert project to last commit |
 | **timekeeper uninstall** | Removes Timekeeper from your project |
+
+
 
 
 
