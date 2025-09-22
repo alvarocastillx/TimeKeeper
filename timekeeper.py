@@ -4,7 +4,8 @@ import json
 import hashlib
 from questionary import Style, select
 from rich.console import Console
-import datetime                                        
+import datetime                  
+import shutil                      
 
 ############
 ####aux#####
@@ -40,7 +41,7 @@ def get_file_content(file):
     with open(file, "r", encoding="utf-8") as f:
         return f.read()
     
-def staging_indexer():
+def staging_indexer(args = None):
     src = os.getcwd()
     version_files = [f for f in os.listdir(os.path.join(src, ".tkp")) if (str(f).__contains__("stage-"))]
     #if file doesnt exists is going to throw exception - creates file
@@ -123,8 +124,10 @@ def staging_indexer():
     with open(index_path, "w") as f:
         #i dont delete objects no more, i cant revert stages if i do so     
         #TODO: arg --gc to remove non existent objects
-        # shutil.rmtree(".tkp/objects/")
-        # os.mkdir(".tkp/objects/")                                                             
+        if (args == "--gc"):
+            console.print("Warning! Deleting inexisting objects. This could affect commits and stages!", style="bold yellow")
+            shutil.rmtree(".tkp/objects/")
+            os.mkdir(".tkp/objects/")                                                             
         for entry in updated_entries:
             objects_creator(file_hash=entry["hash"], content=get_file_content(entry["file"]))
             f.write(json.dumps(entry) + "\n")
@@ -162,9 +165,9 @@ def init():
         console.print("Repository has been created succesfully", style="bold green")
 
 #staging and objects creation 
-def add_all():
+def add_all(args = None):
     #indexes all files with its structure
-    staging_indexer()
+    staging_indexer(args)
     
 def commit():
     #creates snapshot of project
@@ -369,7 +372,7 @@ def help():
 
         Available commands:
             init          Initialize a new repository
-            add_all       Add all files to staging
+            add_all       Add all files to staging / --gc to deleted inexisting objects
             commit        Commit changes
             revert_stage  Revert project to last stage 
             revert_commit Revert project to last commit
@@ -378,14 +381,18 @@ def help():
 
         Examples:
             timekeeper init
-            timekeeper add_all
+            timekeeper add_all --gc
         """)
 
         
         
 if __name__ == "__main__":
     possible_commands = {"init":init,"add_all":add_all,"help":help,"commit":commit,"revert_stage":revert_stage,"revert_commit":revert_commit, "uninstall":uninstall, "exit":exit}
-    if len(sys.argv) >= 2 and sys.argv[1] in possible_commands:
+    if len(sys.argv) == 3 and sys.argv[1] in possible_commands:
+        cmd = sys.argv[1]
+        if (sys.argv[2] == "--gc" and sys.argv[1] == "add_all"):
+            add_all(sys.argv[2])
+    elif len(sys.argv) >= 2 and sys.argv[1] in possible_commands:
         cmd = sys.argv[1]
         possible_commands[cmd]()
     else:
@@ -397,3 +404,4 @@ if __name__ == "__main__":
 
         possible_commands.get(choice)()
 
+##TODO: create blockchain to track changes. draw a tree of commits with authors...
