@@ -7,16 +7,18 @@ A **lightweight version control system**  that tracks your project through stage
 ## 🎯 Features
 
 - ✅ Initialize a repository: `timekeeper init`  
-- ✅ Stage all files: `timekeeper add_all`  
+- ✅ Stage all files: `timekeeper add_all`
+- ✅ Commit your tested checkpoint: `timekeeper commit`
+- ✅ Recover old states of your project
 - ✅ Interactive CLI with colors and ASCII banners  
 - ✅ Handles **Unicode files** flawlessly  
 - ✅ Lightweight, simple, and fully understandable  
-- ⚡ **Future features:** commit history, revert selected stage or commit...
+- ⚡ **Future features:** blockchain to track commits 🔧 
 - 🆘 Feedback is the most important thing! Feel free to help make TimeKeeper something useful!
 
 ---
+<img width="1920" height="1440" alt="843shots_so" src="https://github.com/user-attachments/assets/2cf81f77-5d33-4a17-bbed-6ba96b34436f" />
 
----
 
 ## 🚀 Installation
 
@@ -47,7 +49,11 @@ setx PATH "$env:PATH;C:\path\to\timekeeper"
 | **timekeeper add_all** | Stage all changes |
 | **timekeeper commit** | Commit last uncomitted stage |
 | **timekeeper help** | Displays help menu |
-| **🔧 timekeeper revert_stage** | Revert project to last stage |
-| **🔧 timekeeper revert_commit** | Revert project to last commit |
+| **timekeeper revert_stage** | Revert project to last stage |
+| **timekeeper revert_commit** | Revert project to last commit |
+| **timekeeper uninstall** | Removes Timekeeper from your project |
+
+
+
 
 
